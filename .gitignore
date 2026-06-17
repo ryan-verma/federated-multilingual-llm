@@ -19,3 +19,6 @@ results/temp/
 
 # Hugging Face cache
 cache/
+
+#documents
+docs/

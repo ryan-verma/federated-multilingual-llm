@@ -22,3 +22,12 @@ cache/
 
 #documents
 docs/
+
+# Model checkpoints
+*.pt
+*.pth
+*.bin
+checkpoints/
+
+# Hugging Face cache
+cache/

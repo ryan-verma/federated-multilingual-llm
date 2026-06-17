@@ -31,3 +31,5 @@ checkpoints/
 
 # Hugging Face cache
 cache/
+
+terminal/

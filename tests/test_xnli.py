@@ -1,9 +1,6 @@
 from datasets import load_dataset
 
-dataset = load_dataset(
-    "xnli",
-    "all_languages"
-)
+dataset = load_dataset("xnli", "all_languages")
 
 print("\nXNLI Splits")
 print("-" * 30)
@@ -16,7 +13,14 @@ print("-" * 30)
 
 sample = dataset["train"][0]
 
-print("Premise:", sample["premise"])
-print("Hypothesis:", sample["hypothesis"])
-print("Label:", sample["label"])
-print("Language:", sample["language"])
+print("Available Languages:")
+print(list(sample["premise"].keys()))
+
+print("\nEnglish Premise:")
+print(sample["premise"]["en"])
+
+print("\nEnglish Hypothesis:")
+idx = sample["hypothesis"]["language"].index("en")
+print(sample["hypothesis"]["translation"][idx])
+
+print("\nLabel:", sample["label"])

@@ -90,7 +90,7 @@ federated-multilingual-qa/
 - [x] XLM-R Base integrated
 - [x] Model inspection completed
 - [x] Multilingual tokenization tested
-- [ ] Dataset preparation
+- [x] Dataset preparation
 - [ ] Centralized baseline training
 - [ ] Federated learning experiments
 - [ ] Diversity-preserving methods

@@ -83,8 +83,28 @@ def main():
     # Initialize TrainingArguments
 
     training_args = TrainingArguments(
-        output_dir="results",
+        output_dir="outputs/centralized",
         logging_dir="logs",
+
+        evaluation_strategy="epoch",
+        save_strategy="epoch",
+
+        learning_rate=3e-5,
+
+        per_device_train_batch_size=4,
+        per_device_eval_batch_size=4,
+
+        num_train_epochs=1,
+
+        weight_decay=0.01,
+
+        fp16=torch.cuda.is_available(),
+
+        logging_steps=100,
+
+        save_total_limit=2,
+
+        load_best_model_at_end=True,
     )
 
     # ==================================================
@@ -105,6 +125,14 @@ def main():
     # Print success message
 
     print("\nTrainer initialized successfully.")
+
+    print("\nStarting training...")
+    trainer.train()
+
+    print("\nSaving model...")
+    trainer.save_model("outputs/centralized/final_model")
+
+    print("\nTraining complete.")
 
 if __name__ == "__main__":
     main()

@@ -30,7 +30,8 @@ if __name__ == "__main__":
     device = get_device()
     model.to(device)
 
-    total_params = sum(p.numel() for p in model.parameters())
+    total_params = sum(p.numel() for p in model.parameters()) #p.numel() returns number of elements in parameter tensor p
+                                                              #sum of all parameter tensors to give total parameters
 
     print("\nModel Information")
     print("-" * 30)

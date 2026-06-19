@@ -1,7 +1,15 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
-CLIENT_LANGUAGES = {
+TRAIN_CONFIGS = {
+    "en": "mlqa-translate-train.es",
+    "hi": "mlqa-translate-train.hi",
+    "es": "mlqa-translate-train.es",
+    "de": "mlqa-translate-train.de",
+    "zh": "mlqa-translate-train.zh",
+}
+
+EVAL_CONFIGS = {
     "en": "mlqa.en.en",
     "hi": "mlqa.hi.hi",
     "es": "mlqa.es.es",
@@ -84,15 +92,46 @@ def preprocess_examples(examples):
 
     return tokenized
 
+def prepare_client_datasets():
 
+    client_datasets = {}
 
+    for lang in TRAIN_CONFIGS:
+
+        train_dataset = load_language_dataset(
+            TRAIN_CONFIGS[lang]
+        )
+
+        train_dataset = train_dataset.map(
+            preprocess_examples,
+            batched=True,
+            remove_columns=train_dataset["train"].column_names,
+        )
+
+        eval_dataset = load_language_dataset(
+            EVAL_CONFIGS[lang]
+        )
+
+        eval_dataset = eval_dataset.map(
+            preprocess_examples,
+            batched=True,
+            remove_columns=eval_dataset["validation"].column_names,
+        )
+
+        client_datasets[lang] = {
+            "train": train_dataset["train"],
+            "validation": eval_dataset["validation"],
+            "test": eval_dataset["test"],
+        }
+
+    return client_datasets
 
 def main():
     print("Preparing MLQA client datasets...")
 
     client_datasets = {}
 
-    for lang, config in CLIENT_LANGUAGES.items():
+    for lang, config in EVAL_CONFIGS.items():
 
         print(f"\nProcessing {lang}...")
 

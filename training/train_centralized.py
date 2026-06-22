@@ -129,7 +129,7 @@ def main():
     print("\nTrainer initialized successfully.")
 
     print("\nStarting training...")
-    trainer.train()
+    trainer.train(resume_from_checkpoint=True)
 
     print("\nSaving model...")
     trainer.save_model("outputs/centralized/final_model")

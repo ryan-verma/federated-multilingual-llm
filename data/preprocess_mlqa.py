@@ -1,6 +1,19 @@
 from datasets import load_dataset
 from transformers import AutoTokenizer
 
+# MLQA does not provide a `mlqa-translate-train.en` configuration.
+# The translate-train dataset consists of English SQuAD examples translated
+# into other languages. Therefore, the English client temporarily reuses the
+# Spanish translate-train split as a placeholder to maintain a consistent
+# federated setup. Replace with a true English QA dataset (e.g., SQuAD) if
+# an actual English training client is required.
+TRAIN_CONFIGS = {
+    "en": "mlqa-translate-train.es",
+    "hi": "mlqa-translate-train.hi",
+    "es": "mlqa-translate-train.es",
+    "de": "mlqa-translate-train.de",
+    "zh": "mlqa-translate-train.zh",
+}
 TRAIN_CONFIGS = {
     "en": "mlqa-translate-train.es",
     "hi": "mlqa-translate-train.hi",

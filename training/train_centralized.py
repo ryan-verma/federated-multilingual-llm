@@ -2,6 +2,7 @@ import torch
 
 from datasets import concatenate_datasets
 from transformers import (
+    AutoTokenizer,
     XLMRobertaForQuestionAnswering,
     Trainer,
     TrainingArguments,
@@ -86,15 +87,15 @@ def main():
         output_dir="outputs/centralized",
         logging_dir="logs",
 
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
+        eval_strategy="epoch",
+        save_strategy="steps",
 
         learning_rate=3e-5,
 
         per_device_train_batch_size=4,
         per_device_eval_batch_size=4,
 
-        num_train_epochs=1,
+        num_train_epochs=3,
 
         weight_decay=0.01,
 
@@ -102,9 +103,10 @@ def main():
 
         logging_steps=100,
 
+        save_steps=10000,
         save_total_limit=2,
 
-        load_best_model_at_end=True,
+        load_best_model_at_end=False,
     )
 
     # ==================================================
@@ -127,10 +129,13 @@ def main():
     print("\nTrainer initialized successfully.")
 
     print("\nStarting training...")
-    trainer.train()
+    trainer.train(resume_from_checkpoint=True)
 
     print("\nSaving model...")
     trainer.save_model("outputs/centralized/final_model")
+
+    tokenizer = AutoTokenizer.from_pretrained("xlm-roberta-base")
+    tokenizer.save_pretrained("outputs/centralized/final_model")
 
     print("\nTraining complete.")
 

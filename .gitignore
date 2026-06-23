@@ -1,35 +1,47 @@
+# ==========================================
 # Python
+# ==========================================
 __pycache__/
 *.py[cod]
 
-# Virtual environments
+# ==========================================
+# Virtual Environment
+# ==========================================
 .venv/
 
+# ==========================================
 # Jupyter
+# ==========================================
 .ipynb_checkpoints/
 
-# Model checkpoints
-checkpoints/
-
+# ==========================================
 # VS Code
+# ==========================================
 .vscode/
 
-# Results
-results/temp/
+# ==========================================
+# Training Outputs and Checkpoints
+# ==========================================
+outputs/
+results/
 
-# Hugging Face cache
-cache/
 
-#documents
-docs/
+# ==========================================
+# Terminal Files
+# ==========================================
+terminal/
 
-# Model checkpoints
+# ==========================================
+# Hugging Face / PyTorch Model Artifacts
+# ==========================================
 *.pt
 *.pth
 *.bin
-checkpoints/
+*.safetensors
 
-# Hugging Face cache
+# ==========================================
+# Hugging Face Cache
+# ==========================================
 cache/
 
-terminal/
+docs/

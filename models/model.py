@@ -1,4 +1,4 @@
-from transformers import AutoTokenizer, AutoModel
+from transformers import AutoTokenizer, AutoModel, XLMRobertaForQuestionAnswering
 import torch
 
 
@@ -12,7 +12,7 @@ def load_tokenizer():
 
 def load_model():
     """Load XLM-R model."""
-    return AutoModel.from_pretrained(MODEL_NAME)
+    return XLMRobertaForQuestionAnswering.from_pretrained(MODEL_NAME)
 
 
 def get_device():

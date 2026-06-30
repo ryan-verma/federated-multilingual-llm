@@ -18,6 +18,10 @@ from evaluation.metrics import (
     compute_metrics,
 )
 
+from evaluation.cjk_metrics import (
+    compute_cjk_metrics,
+)
+
 MODEL_PATH = "outputs/centralized/final_model"
 
 EVAL_CONFIGS = {
@@ -27,6 +31,12 @@ EVAL_CONFIGS = {
     "de": "mlqa.de.de",
     "zh": "mlqa.zh.zh",
 }
+
+# Languages where the standard whitespace-tokenized SQuAD F1 metric
+# understates performance, since they aren't whitespace-delimited.
+# Character-level F1 is used for these instead -- see
+# evaluation/cjk_metrics.py for why.
+CHAR_LEVEL_LANGUAGES = {"zh"}
 
 
 def evaluate_language(lang, config):
@@ -75,8 +85,6 @@ def evaluate_language(lang, config):
         validation_examples,
     )
 
-    squad_metric = evaluate.load("squad")
-
     formatted_predictions = []
 
     references = []
@@ -100,10 +108,20 @@ def evaluate_language(lang, config):
             }
         )
 
-    results = squad_metric.compute(
-        predictions=formatted_predictions,
-        references=references,
-    )
+    if lang in CHAR_LEVEL_LANGUAGES:
+        # Whitespace-split F1 understates Chinese performance -- use
+        # character-level comparison instead (see evaluation/cjk_metrics.py).
+        results = compute_cjk_metrics(
+            formatted_predictions,
+            references,
+        )
+        print(f"(using character-level F1 for {lang})")
+    else:
+        squad_metric = evaluate.load("squad")
+        results = squad_metric.compute(
+            predictions=formatted_predictions,
+            references=references,
+        )
 
     print(
         f"EM: {results['exact_match']:.2f}"
